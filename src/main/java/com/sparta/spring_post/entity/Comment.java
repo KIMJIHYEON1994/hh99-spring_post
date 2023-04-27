@@ -37,6 +37,7 @@ public class Comment extends Timestamped {
     @Column(name = "comment_like")
     @ColumnDefault("0")
     private Integer like;
+
     public Comment(Users user, CommentRequestDto commentRequestDto, Post post) {
         this.post = post;
         this.users = user;
