@@ -7,7 +7,6 @@ import com.sparta.spring_post.entity.Post;
 import com.sparta.spring_post.entity.PostLike;
 import com.sparta.spring_post.entity.Users;
 import com.sparta.spring_post.exception.CustomException;
-import com.sparta.spring_post.exception.ErrorCode;
 import com.sparta.spring_post.repository.PostLikeRepository;
 import com.sparta.spring_post.repository.PostRepository;
 import com.sparta.spring_post.repository.UserRepository;
@@ -19,6 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.sparta.spring_post.exception.ErrorCode.INVALID_USER;
+import static com.sparta.spring_post.exception.ErrorCode.POST_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -40,7 +42,7 @@ public class PostService {
     @Transactional(readOnly = true)
     public PostResponseDto getPost(Long id) {
         Post post = postRepository.findById(id).orElseThrow(
-                () -> new CustomException(ErrorCode.POST_NOT_FOUND)
+                () -> new CustomException(POST_NOT_FOUND)
         );
         return new PostResponseDto(post);
     }
@@ -57,14 +59,14 @@ public class PostService {
     public PostResponseDto updatePost(Long id, PostRequestDto postRequestDto, Users user) {
 
         Post post = postRepository.findById(id).orElseThrow(
-                () -> new CustomException(ErrorCode.POST_NOT_FOUND)
+                () -> new CustomException(POST_NOT_FOUND)
         );
 
         if (post.getUsers().getUsername().equals(user.getUsername()) || user.getRole().equals(user.getRole().ADMIN)) {
             post.update(postRequestDto);
             return new PostResponseDto(post);
         } else {
-            throw new CustomException(ErrorCode.INVALID_USER);
+            throw new CustomException(INVALID_USER);
         }
     }
 
@@ -72,14 +74,14 @@ public class PostService {
     @Transactional
     public UserResponseDto<Post> deletePost(Long id, Users user) {
         Post post = postRepository.findById(id).orElseThrow(
-                () -> new CustomException(ErrorCode.POST_NOT_FOUND)
+                () -> new CustomException(POST_NOT_FOUND)
         );
 
         if (post.getUsers().getUsername().equals(user.getUsername()) || user.getRole().equals(user.getRole().ADMIN)) {
             postRepository.delete(post);
             return UserResponseDto.setSuccess("게시글 삭제 성공");
         } else {
-            throw new CustomException(ErrorCode.INVALID_USER);
+            throw new CustomException(INVALID_USER);
         }
 
     }
@@ -88,12 +90,12 @@ public class PostService {
     @Transactional
     public UserResponseDto<Post> updateLike(Long id) {
         Post post = postRepository.findById(id).orElseThrow(
-                () -> new CustomException(ErrorCode.POST_NOT_FOUND)
+                () -> new CustomException(POST_NOT_FOUND)
         );
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Users user = userRepository.findByUsername(authentication.getName()).orElseThrow(
-                () -> new CustomException(ErrorCode.INVALID_USER)
+                () -> new CustomException(INVALID_USER)
         );
 
         if (postLikeRepository.findByPostAndUser(post, user) == null) {
