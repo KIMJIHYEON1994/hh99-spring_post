@@ -20,7 +20,6 @@ public class UserDetailsImpl implements UserDetails {
     }
 
     public Users getUser() {
-        System.out.println(user);
         return user;
     }
 
