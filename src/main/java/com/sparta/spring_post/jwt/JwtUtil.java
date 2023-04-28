@@ -29,7 +29,8 @@ public class JwtUtil {
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String AUTHORIZATION_KEY = "auth";
     private static final String BEARER_PREFIX = "Bearer ";
-    private static final long TOKEN_TIME = 60 * 60 * 1000L;
+    private static final long ACCESSTOKEN_TIME = 60 * 60 * 1000L;               // 1시간
+    private static final long REFRESHTOKEN_TIME = 7 * 24 * 60 * 60 * 1000L;     // 일주일
     private final UserDetailsServiceImpl userDetailsService;
 
     @Value("${jwt.secret.key}")
@@ -60,10 +61,21 @@ public class JwtUtil {
                 Jwts.builder()
                         .setSubject(username)
                         .claim(AUTHORIZATION_KEY, role)
-                        .setExpiration(new Date(date.getTime() + TOKEN_TIME))
+                        .setExpiration(new Date(date.getTime() + ACCESSTOKEN_TIME))
                         .setIssuedAt(date)
                         .signWith(key, signatureAlgorithm)
                         .compact();
+
+//        String refreshToken = BEARER_PREFIX +
+//                Jwts.builder()
+//                        .setSubject(username)
+//                        .claim(AUTHORIZATION_KEY, role)
+//                        .setExpiration(new Date(date.getTime() + REFRESHTOKEN_TIME))
+//                        .setIssuedAt(date)
+//                        .signWith(key, signatureAlgorithm)
+//                        .compact();
+
+//        return
     }
 
     // 토큰 검증
