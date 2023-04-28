@@ -1,7 +1,8 @@
-package com.sparta.spring_post.jwt;
+package com.sparta.spring_post.jwt.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.spring_post.dto.SecurityExceptionDto;
+import com.sparta.spring_post.jwt.util.JwtUtil;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

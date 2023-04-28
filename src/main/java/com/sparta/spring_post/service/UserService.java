@@ -6,7 +6,7 @@ import com.sparta.spring_post.dto.UserResponseDto;
 import com.sparta.spring_post.entity.RoleType;
 import com.sparta.spring_post.entity.Users;
 import com.sparta.spring_post.exception.CustomException;
-import com.sparta.spring_post.jwt.JwtUtil;
+import com.sparta.spring_post.jwt.util.JwtUtil;
 import com.sparta.spring_post.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;

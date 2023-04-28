@@ -1,4 +1,4 @@
-package com.sparta.spring_post.jwt;
+package com.sparta.spring_post.jwt.util;
 
 
 import com.sparta.spring_post.entity.RoleType;
