@@ -11,6 +11,7 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @Entity
+@Table(name = "USERS")
 public class Users {
     @Id
     @Column(name = "user_name", nullable = false, unique = true)

@@ -17,6 +17,7 @@ import static com.sparta.spring_post.exception.ErrorCode.*;
 @Entity
 @NoArgsConstructor
 @DynamicInsert
+@Table(name = "POSTS")
 public class Post extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
