@@ -8,7 +8,6 @@ import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
@@ -20,19 +19,19 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
 
     @Bean
     public Docket api() {
+        // 기본 설정
         return new Docket(DocumentationType.SWAGGER_2).select()
                 .apis(RequestHandlerSelectors.basePackage("com.sparta.spring_post.controller"))
-                .paths(PathSelectors.ant("/*/**"))
-                .build().apiInfo(apiInfoMetaData());
+                .paths(PathSelectors.ant("/api/**"))
+                .build()
+                .apiInfo(apiInfoMetaData());
     }
 
     private ApiInfo apiInfoMetaData() {
-
-        return new ApiInfoBuilder().title("NAME OF SERVICE")
-                .description("API Endpoint Decoration")
-                .contact(new Contact("Dev-Team", "https://www.dev-team.com/", "dev-team@gmail.com"))
-                .license("Apache 2.0")
-                .licenseUrl("http://www.apache.org/licenses/LICENSE-2.0.html")
+        // 상세 설명
+        return new ApiInfoBuilder()
+                .title("Spring Post RESTful API")
+                .description("항해99 Spring Post API 입니다")
                 .version("1.0.0")
                 .build();
     }
