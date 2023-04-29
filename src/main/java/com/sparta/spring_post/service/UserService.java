@@ -3,10 +3,13 @@ package com.sparta.spring_post.service;
 import com.sparta.spring_post.dto.LoginRequestDto;
 import com.sparta.spring_post.dto.SignupRequestDto;
 import com.sparta.spring_post.dto.UserResponseDto;
+import com.sparta.spring_post.entity.RefreshToken;
 import com.sparta.spring_post.entity.RoleType;
 import com.sparta.spring_post.entity.Users;
 import com.sparta.spring_post.exception.CustomException;
+import com.sparta.spring_post.jwt.dto.TokenDto;
 import com.sparta.spring_post.jwt.util.JwtUtil;
+import com.sparta.spring_post.repository.RefreshTokenRepository;
 import com.sparta.spring_post.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,6 +31,7 @@ public class UserService {
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
     private static final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
+    private final RefreshTokenRepository refreshTokenRepository;
 
     @Transactional
     public UserResponseDto<Users> signup(SignupRequestDto signupRequestDto) {
@@ -66,11 +70,27 @@ public class UserService {
 
         // 비밀번호 확인
         if(!passwordEncoder.matches(password, user.getPassword())){
-            throw  new CustomException(INVALID_USER_PASSWORD);
+            throw new CustomException(INVALID_USER_PASSWORD);
         }
 
-        httpServletResponse.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(user.getUsername(), user.getRole()));
+        TokenDto tokenDto = jwtUtil.createAllToken(username, user.getRole());
+
+        Optional<RefreshToken> refreshToken = refreshTokenRepository.findByUsername(username);
+
+        if (refreshToken.isPresent()) {
+            refreshTokenRepository.save(refreshToken.get().updateToken(tokenDto.getRefreshToken()));
+        } else {
+            RefreshToken newToken = new RefreshToken(tokenDto.getRefreshToken(), username);
+            refreshTokenRepository.save(newToken);
+        }
+
+        setHeader(httpServletResponse, tokenDto);
         return UserResponseDto.setSuccess("로그인 성공!");
+    }
+
+    private void setHeader(HttpServletResponse httpServletResponse, TokenDto tokenDto) {
+        httpServletResponse.addHeader(JwtUtil.ACCESS_TOKEN, tokenDto.getAccessToken());
+        httpServletResponse.addHeader(JwtUtil.REFRESH_TOKEN, tokenDto.getRefreshToken());
     }
 
 }
