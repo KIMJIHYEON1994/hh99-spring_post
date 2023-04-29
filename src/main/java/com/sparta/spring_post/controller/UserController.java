@@ -5,6 +5,8 @@ import com.sparta.spring_post.dto.SignupRequestDto;
 import com.sparta.spring_post.dto.UserResponseDto;
 import com.sparta.spring_post.entity.Users;
 import com.sparta.spring_post.service.UserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,7 +19,7 @@ import javax.validation.Valid;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/user")
-//@Api(value = "UserController", description = "유저 관련 API")
+@Api(value = "UserController", description = "유저 관련 API")
 public class UserController {
 
     // UserService 연결
@@ -25,14 +27,14 @@ public class UserController {
 
     // 회원가입
     @PostMapping("/signup")
-//    @ApiOperation(value = "유저 회원가입", notes = "유저 회원가입 설명")
+    @ApiOperation(value = "유저 회원가입", notes = "유저 회원가입 설명")
     public UserResponseDto<Users> signup(@Valid @RequestBody SignupRequestDto signupRequestDto) {
         return userService.signup(signupRequestDto);
     }
 
     // 로그인
     @PostMapping("/login")
-//    @ApiOperation(value = "유저 로그인", notes = "유저 로그인 설명")
+    @ApiOperation(value = "유저 로그인", notes = "유저 로그인 설명")
     public UserResponseDto<Users> login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse httpServletResponse) {
         return userService.login(loginRequestDto, httpServletResponse);
     }

@@ -1,5 +1,6 @@
 package com.sparta.spring_post.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sparta.spring_post.entity.Comment;
 import com.sparta.spring_post.entity.Post;
 import com.sparta.spring_post.entity.Users;
@@ -14,7 +15,9 @@ public class PostResponseDto {
     private String title;
     private String content;
     private Users user;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "YYYY-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "YYYY-MM-dd HH:mm:ss")
     private LocalDateTime modifiedAt;
     private List<Comment> comments;
     private int like;
