@@ -1,7 +1,6 @@
 package com.sparta.spring_post.config;
 
 import com.sparta.spring_post.jwt.filter.JwtAuthFilter;
-import com.sparta.spring_post.jwt.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
