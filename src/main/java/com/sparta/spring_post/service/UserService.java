@@ -89,8 +89,8 @@ public class UserService {
     }
 
     private void setHeader(HttpServletResponse httpServletResponse, TokenDto tokenDto) {
-        httpServletResponse.addHeader(JwtUtil.ACCESS_TOKEN, tokenDto.getAccessToken());
-        httpServletResponse.addHeader(JwtUtil.REFRESH_TOKEN, tokenDto.getRefreshToken());
+        httpServletResponse.addHeader(jwtUtil.ACCESS_KEY, tokenDto.getAccessToken());
+        httpServletResponse.addHeader(jwtUtil.REFRESH_KEY, tokenDto.getRefreshToken());
     }
 
 }

@@ -30,7 +30,6 @@ import java.util.Optional;
 @Component
 @RequiredArgsConstructor
 public class JwtUtil {
-    public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String AUTHORIZATION_KEY = "auth";
     private static final String BEARER_PREFIX = "Bearer ";
 
@@ -38,8 +37,6 @@ public class JwtUtil {
     public static final String REFRESH_KEY = "REFRESH_KEY";
     private static final long ACCESSTOKEN_TIME = 60 * 60 * 1000L;               // 1시간
     private static final long REFRESHTOKEN_TIME = 7 * 24 * 60 * 60 * 1000L;     // 일주일
-    private static final String ACCESS_TOKEN = "Access_Token";
-    private static final String REFRESH_TOKEN = "Refresh_Token";
 
     @Value("${jwt.secret.key}")
     private String secretKey;
@@ -121,16 +118,8 @@ public class JwtUtil {
         return refreshToken.isPresent() && token.equals(refreshToken.get().getRefreshToken().substring(7));
     }
 
-    public String getUsernameFromToken(String token) {
-        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getSubject();
-    }
-
     public void setHeaderAccessToken(HttpServletResponse httpServletResponse, String accessToken) {
-        httpServletResponse.setHeader(ACCESS_TOKEN, accessToken);
-    }
-
-    public void setHeaderRefreshToken(HttpServletResponse httpServletResponse, String refreshToken) {
-        httpServletResponse.setHeader(REFRESH_TOKEN, refreshToken);
+        httpServletResponse.setHeader(ACCESS_KEY, accessToken);
     }
 
 }

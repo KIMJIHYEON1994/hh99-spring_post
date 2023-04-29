@@ -35,7 +35,7 @@ import static com.sparta.spring_post.exception.ErrorResponse.toResponseEntity;
 @EnableGlobalMethodSecurity(securedEnabled = true) // @Secured 어노테이션 활성화
 public class WebSecurityConfig {
 
-    private final JwtUtil jwtUtil;
+    private final JwtAuthFilter jwtAuthFilter;
 
     private static final String[] PERMIT_URL_ARRAY = {
 /* swagger v2 */
@@ -80,9 +80,7 @@ public class WebSecurityConfig {
                 .antMatchers("/api/user/login").permitAll()
                 .antMatchers(PERMIT_URL_ARRAY).permitAll()
                 // 어떤 요청이든 '인증'
-                .anyRequest().authenticated()
-                // JWT 인증/인가를 사용하기 위한 설정
-                .and().addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+                .anyRequest().authenticated();
 
         http.exceptionHandling()
                 .authenticationEntryPoint(new AuthenticationEntryPoint() {
@@ -103,6 +101,7 @@ public class WebSecurityConfig {
                     }
                 });
 
+        http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         http.httpBasic().and();
 
         return http.build();
