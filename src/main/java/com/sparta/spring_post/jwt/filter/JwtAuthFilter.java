@@ -34,12 +34,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         String access_token = jwtUtil.resolveToken(request, jwtUtil.ACCESS_KEY);
         String refresh_token = jwtUtil.resolveToken(request, jwtUtil.REFRESH_KEY);
 
-        if(access_token != null) {
-            if(jwtUtil.validateToken(access_token)){
+        if (access_token != null) {
+            if (jwtUtil.validateToken(access_token)) {
                 setAuthentication(jwtUtil.getUserInfoFromToken(access_token));
             } else if (refresh_token != null && jwtUtil.validateRefreshToken(refresh_token)) {
                 String username = jwtUtil.getUserInfoFromToken(refresh_token);
-                Users user = userRepository.findByUsername(username).get();
+                Users user = userRepository.findByUsername(username);
                 String newAccessToken = jwtUtil.createToken(username, user.getRole(), "Access");
                 jwtUtil.setHeaderAccessToken(response, newAccessToken);
                 setAuthentication(username);

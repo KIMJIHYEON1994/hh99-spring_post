@@ -80,9 +80,10 @@ public class CommentService {
         );
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Users user = userRepository.findByUsername(authentication.getName()).orElseThrow(
-                () -> new CustomException(INVALID_USER)
-        );
+        Users user = userRepository.findByUsername(authentication.getName());
+        if (user == null) {
+            throw new CustomException(INVALID_USER);
+        }
 
         if (commentLikeRepository.findByCommentAndUser(comment, user) == null) {
             commentLikeRepository.save(new CommentLike(comment, user));

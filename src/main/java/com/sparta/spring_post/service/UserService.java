@@ -25,9 +25,7 @@ import static com.sparta.spring_post.exception.ErrorCode.*;
 @RequiredArgsConstructor
 public class UserService {
 
-    // UserRepository 연결
     private final UserRepository userRepository;
-    // JwtUtil 연결
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
     private static final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
@@ -39,18 +37,16 @@ public class UserService {
         String password = passwordEncoder.encode(signupRequestDto.getPassword());
 
         // 회원 중복 확인
-        Optional<Users> found = userRepository.findByUsername(username);
-        if (found.isPresent()) {
+        Users user = userRepository.findByUsername(username);
+        if (user != null) {
             throw new CustomException(INVALID_USER_EXISTENCE);
         }
 
         // 관리자 확인
-        RoleType role = RoleType.USER;
-        if (signupRequestDto.isAdmin()) {
-            if (!signupRequestDto.getAdminToken().equals(ADMIN_TOKEN)) {
-                throw new CustomException(INVALID_ADMIN_PASSWORD);
-            }
-            role = RoleType.ADMIN;
+        RoleType role = signupRequestDto.isAdmin() ? RoleType.ADMIN: RoleType.USER;
+
+        if (role == RoleType.ADMIN && !ADMIN_TOKEN.equals(signupRequestDto.getAdminToken())) {
+            throw new CustomException(INVALID_ADMIN_PASSWORD);
         }
 
         Users users = new Users(username, password, role);
@@ -64,12 +60,13 @@ public class UserService {
         String password = loginRequestDto.getPassword();
 
         // 사용자 확인
-        Users user = userRepository.findByUsername(username).orElseThrow(
-                () -> new CustomException(USER_NOT_FOUND)
-        );
+        Users user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new CustomException(USER_NOT_FOUND);
+        }
 
         // 비밀번호 확인
-        if(!passwordEncoder.matches(password, user.getPassword())){
+        if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new CustomException(INVALID_USER_PASSWORD);
         }
 
