@@ -37,11 +37,6 @@ public class WebSecurityConfig {
 
     private final JwtUtil jwtUtil;
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
     private static final String[] PERMIT_URL_ARRAY = {
 /* swagger v2 */
             "/v2/api-docs",
@@ -56,6 +51,10 @@ public class WebSecurityConfig {
             "/swagger-ui/**"
     };
 
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
