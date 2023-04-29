@@ -9,6 +9,9 @@ import com.sparta.spring_post.service.PostService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,8 +28,8 @@ public class PostController {
     // 목록 조회
     @GetMapping("/posts")
     @ApiOperation(value = "게시글 목록 조회", notes = "게시글 목록 조회 설명")
-    public List<PostResponseDto> getAllPosts() {
-        return postService.getAllPosts();
+    public List<PostResponseDto> getAllPosts(@PageableDefault(page = 0, size = 5, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+        return postService.getAllPosts(pageable);
     }
 
     // 상세 조회

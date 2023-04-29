@@ -11,13 +11,13 @@ import com.sparta.spring_post.repository.PostLikeRepository;
 import com.sparta.spring_post.repository.PostRepository;
 import com.sparta.spring_post.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.sparta.spring_post.exception.ErrorCode.INVALID_USER;
 import static com.sparta.spring_post.exception.ErrorCode.POST_NOT_FOUND;
@@ -34,8 +34,12 @@ public class PostService {
 
     // 전체 게시물 목록 조회
     @Transactional(readOnly = true)
-    public List<PostResponseDto> getAllPosts() {
-        return postRepository.findAllByOrderByCreatedAtDesc().stream().map(PostResponseDto::new).collect(Collectors.toList());
+    public List<PostResponseDto> getAllPosts(Pageable pageable) {
+        List<PostResponseDto> posts = postRepository.findAll(pageable).stream().map(PostResponseDto::new).toList();
+        if (posts.isEmpty()) {
+            throw new CustomException(POST_NOT_FOUND);
+        }
+        return posts;
     }
 
     // 선택한 게시물 상세 조회
