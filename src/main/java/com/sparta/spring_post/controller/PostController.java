@@ -32,7 +32,7 @@ public class PostController {
 
     // 상세 조회
     @GetMapping("/posts/{id}")
-//    @ApiOperation(value = "게시글 상세 조회", notes = "게시글 상세 조회 설명")
+    @ApiOperation(value = "게시글 상세 조회", notes = "게시글 상세 조회 설명")
     public PostResponseDto getPost(@PathVariable Long id) {
         return postService.getPost(id);
     }
