@@ -20,7 +20,6 @@ import java.util.List;
 @Api(value = "PostController", description = "게시글 관련 API")
 public class PostController {
 
-    // PostService 연결
     private final PostService postService;
 
     // 목록 조회

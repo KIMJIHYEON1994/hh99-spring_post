@@ -22,7 +22,6 @@ import javax.validation.Valid;
 @Api(value = "UserController", description = "유저 관련 API")
 public class UserController {
 
-    // UserService 연결
     private final UserService userService;
 
     // 회원가입
