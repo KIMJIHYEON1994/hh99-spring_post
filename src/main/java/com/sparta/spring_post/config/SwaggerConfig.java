@@ -49,13 +49,4 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
         return produces;
     }
 
-//    @Override
-//    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-//        ObjectMapper objectMapper = Jackson2ObjectMapperBuilder.json()
-//                .featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-//                .build();
-//        converters.add(new MappingJackson2HttpMessageConverter(objectMapper));
-//        super.configureMessageConverters(converters);
-//    }
-
 }
