@@ -34,7 +34,6 @@ public class Comment extends Timestamped {
     @JsonManagedReference
     private Users users;
 
-
     @Column(name = "comment_like")
     @ColumnDefault("0")
     private Integer like;
