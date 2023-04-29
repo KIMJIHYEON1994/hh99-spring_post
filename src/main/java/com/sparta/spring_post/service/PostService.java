@@ -26,10 +26,8 @@ import static com.sparta.spring_post.exception.ErrorCode.POST_NOT_FOUND;
 @RequiredArgsConstructor
 public class PostService {
 
-    // PostRepository 연결
     private final PostRepository postRepository;
     private final PostLikeRepository postLikeRepository;
-    // UserRepository 연결
     private final UserRepository userRepository;
 
     // 전체 게시물 목록 조회
