@@ -39,9 +39,6 @@ public class PostController {
     @PostMapping("/post")
 //    @ApiOperation(value = "게시글 작성", notes = "게시글 작성 설명")
     public PostResponseDto createPost(@RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        if (userDetails == null) {
-            return null;
-        }
         return postService.createPost(postRequestDto, userDetails.getUser());
     }
 
