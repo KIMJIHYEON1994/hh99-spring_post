@@ -1,17 +1,14 @@
 package com.sparta.spring_post.service;
 
 import com.sparta.spring_post.dto.LoginRequestDto;
-import com.sparta.spring_post.dto.QuitRequestDto;
 import com.sparta.spring_post.dto.SignupRequestDto;
 import com.sparta.spring_post.dto.UserResponseDto;
-import com.sparta.spring_post.entity.Post;
 import com.sparta.spring_post.entity.RefreshToken;
 import com.sparta.spring_post.entity.RoleType;
 import com.sparta.spring_post.entity.Users;
 import com.sparta.spring_post.exception.CustomException;
 import com.sparta.spring_post.jwt.dto.TokenDto;
 import com.sparta.spring_post.jwt.util.JwtUtil;
-import com.sparta.spring_post.repository.PostRepository;
 import com.sparta.spring_post.repository.RefreshTokenRepository;
 import com.sparta.spring_post.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +26,6 @@ import static com.sparta.spring_post.exception.ErrorCode.*;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final PostRepository postRepository;
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
     private static final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
@@ -47,7 +43,7 @@ public class UserService {
         }
 
         // 관리자 확인
-        RoleType role = signupRequestDto.isAdmin() ? RoleType.ADMIN: RoleType.USER;
+        RoleType role = signupRequestDto.isAdmin() ? RoleType.ADMIN : RoleType.USER;
 
         if (role == RoleType.ADMIN && !ADMIN_TOKEN.equals(signupRequestDto.getAdminToken())) {
             throw new CustomException(INVALID_ADMIN_PASSWORD);
@@ -87,26 +83,6 @@ public class UserService {
 
         setHeader(httpServletResponse, tokenDto);
         return UserResponseDto.setSuccess("로그인 성공!");
-    }
-
-    @Transactional
-    public UserResponseDto<Users> quit(QuitRequestDto quitResponseDto) {
-        String username = quitResponseDto.getUsername();
-        String password = quitResponseDto.getPassword();
-
-        // 사용자 확인
-        Users user = userRepository.findByUsername(username);
-        if (user == null) {
-            throw new CustomException(USER_NOT_FOUND);
-        }
-
-        // 비밀번호 확인
-        if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new CustomException(INVALID_USER_PASSWORD);
-        }
-
-        userRepository.deleteByUsername(username);
-        return UserResponseDto.setSuccess("회원탈퇴 성공!");
     }
 
     private void setHeader(HttpServletResponse httpServletResponse, TokenDto tokenDto) {

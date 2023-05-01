@@ -22,7 +22,6 @@ public class PostResponseDto {
     private List<Comment> comments;
     private int like;
 
-
     public PostResponseDto(Post post) {
         this.id = post.getId();
         this.title = post.getTitle();
