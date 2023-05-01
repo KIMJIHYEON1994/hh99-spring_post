@@ -59,7 +59,6 @@ public class PostService {
     // 게시물 수정
     @Transactional
     public PostResponseDto updatePost(Long id, PostRequestDto postRequestDto, Users user) {
-
         Post post = postRepository.findById(id).orElseThrow(
                 () -> new CustomException(POST_NOT_FOUND)
         );
@@ -85,7 +84,6 @@ public class PostService {
         } else {
             throw new CustomException(INVALID_USER);
         }
-
     }
 
     // 좋아요
