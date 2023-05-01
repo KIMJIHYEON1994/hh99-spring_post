@@ -4,7 +4,8 @@
 2. Swagger 적용
 3. RefreshToken
 4. 페이징 처리
-5. 사용자로 게시글 검색 (구현중)
+5. application.properties 를 .gitignore 하기
+6. 사용자로 게시글 검색 (구현중)
 
 # 🌸 스프링 주특기 과제 Lv.5 에서 구현한 기능
 ## 🙋‍♀️ 회원 관리 관련 기능
