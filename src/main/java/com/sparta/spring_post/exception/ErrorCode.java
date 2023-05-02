@@ -17,23 +17,19 @@ public enum ErrorCode {
     POST_TITLE_NOT_FOUND(HttpStatus.NOT_FOUND, "글의 제목이 없습니다."),
     POST_CONTENT_NOT_FOUND(HttpStatus.NOT_FOUND, "글의 내용이 없습니다."),
 
-
     /* 401 UNAUTHORIZED */
     INVALID_AUTH_TOKEN(HttpStatus.UNAUTHORIZED, "권한 정보가 없는 토큰입니다"),
     UNAUTHORIZED_USER(HttpStatus.UNAUTHORIZED, "현재 내 계정 정보가 존재하지 않습니다"),
-
 
     /* 404 NOT_FOUND */
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 유저 정보를 찾을 수 없습니다"),
     POST_NOT_FOUND(HttpStatus.NOT_FOUND, "게시글을 찾을 수 없습니다"),
     COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "댓글을 찾을 수 없습니다"),
 
-
     /* 409 CONFLICT */
     DUPLICATE_RESOURCE(HttpStatus.CONFLICT, "데이터가 이미 존재합니다");
 
-
-
     private final HttpStatus httpStatus;
     private final String message;
+
 }
