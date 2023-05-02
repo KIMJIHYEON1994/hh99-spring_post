@@ -14,7 +14,6 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor
 @DynamicInsert
-@Table(name = "COMMENTS")
 public class Comment extends Timestamped {
 
     @Id

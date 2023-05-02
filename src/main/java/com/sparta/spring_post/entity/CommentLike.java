@@ -8,7 +8,6 @@ import javax.persistence.*;
 @Getter
 @Entity
 @NoArgsConstructor
-@Table(name = "COMMENTS_LIKE")
 public class CommentLike {
 
     @Id

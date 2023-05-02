@@ -8,7 +8,6 @@ import javax.persistence.*;
 @Getter
 @Entity
 @NoArgsConstructor
-@Table(name = "POSTS_LIKE")
 public class PostLike {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,4 +25,5 @@ public class PostLike {
         this.post = post;
         this.user = user;
     }
+
 }
