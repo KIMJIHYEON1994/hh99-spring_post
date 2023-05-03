@@ -55,16 +55,6 @@ public class JwtUtil {
         return new TokenDto(createToken(username, roleType, ACCESS_KEY), createToken(username, roleType, REFRESH_KEY));
     }
 
-    // header 토큰을 가져오기
-    public String resolveToken(HttpServletRequest request, String token) {
-        String tokenName = token.equals(ACCESS_KEY) ? ACCESS_KEY : REFRESH_KEY;
-        String bearerToken = request.getHeader(tokenName);
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
-            return bearerToken.substring(7);
-        }
-        return null;
-    }
-
     // 토큰 생성
     public String createToken(String username, RoleType role, String tokenName) {
         Date date = new Date();
@@ -98,6 +88,15 @@ public class JwtUtil {
         return false;
     }
 
+    public Boolean validateRefreshToken(String token) {
+        if (!validateToken(token)) {
+            return false;
+        }
+        Optional<RefreshToken> refreshToken = refreshTokenRepository.findByUsername(getUserInfoFromToken(token));
+
+        return refreshToken.isPresent() && token.equals(refreshToken.get().getRefreshToken().substring(7));
+    }
+
     // 토큰에서 사용자 정보 가져오기
     public String getUserInfoFromToken(String token) {
         return Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody().getSubject();
@@ -108,14 +107,15 @@ public class JwtUtil {
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
-    
-    public Boolean validateRefreshToken(String token) {
-        if (!validateToken(token)) {
-            return false;
-        }
-        Optional<RefreshToken> refreshToken = refreshTokenRepository.findByUsername(getUserInfoFromToken(token));
 
-        return refreshToken.isPresent() && token.equals(refreshToken.get().getRefreshToken().substring(7));
+    // header 토큰을 가져오기
+    public String resolveToken(HttpServletRequest request, String token) {
+        String tokenName = token.equals(ACCESS_KEY) ? ACCESS_KEY : REFRESH_KEY;
+        String bearerToken = request.getHeader(tokenName);
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
+            return bearerToken.substring(7);
+        }
+        return null;
     }
 
     public void setHeaderAccessToken(HttpServletResponse httpServletResponse, String accessToken) {
